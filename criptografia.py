@@ -6,6 +6,8 @@ alphabet = 'abcdefghijklmnopqrstuvwxyz,.?çéãõáâàêèóòô!@#$%¨&*()-_+=
 alphabet2 = '9876543210 ,.?çéãõáâàêèóòô!@#$%¨&*()-_+=°zyxwvutsrqponmlkjihgfedcba'
 
 # Criptografar
+
+
 def encrypt(message, key):
     key = key.isdigit()
     if key:
@@ -18,7 +20,7 @@ def encrypt(message, key):
     else:
         error()
         return ''
-    
+
 
 # Desencriptografar
 def decrypt(message, key):
@@ -35,39 +37,154 @@ def decrypt(message, key):
         return ''
 
 # Interface
+
+
 def interface():
-    sg.theme('Reddit')
+    sg.theme('DarkBlue')
     layout = [
-        [sg.Button('Cifrar'),sg.Button('Decifrar')],  
+        [sg.Text(
+            'Bem vindo ao sistema de criptografia da guarda costeira brasileira!',
+            font=("Helvetica", 21),
+            pad=(0, 50)
+        )],
+
+        [sg.Image(source="image/logo.png",)],
+
+        [sg.Text(
+            'Todo e qualquer contato com a tripulação do seu navio e o lixo toxico será controlado a partir de agora. \nPara se comunicar conosco criptografe e envie a sua mensagem.',
+            font=("Arial", 13),
+            pad=(0, 50)
+
+        ), ],
+
+        [sg.Button(
+            button_text="Cifrar",
+            size=(30, 2),
+            button_color=('white', '#009444')
+        ),
+
+            sg.Button(
+                button_text='Decifrar',
+                size=(30, 2),
+                button_color=('white', '#009444')
+        )
+        ],
     ]
-    return sg.Window('Interface',size=(300,150), layout=layout, finalize=True)
+    return sg.Window('Bem vindo!', size=(1000, 600), element_justification='c', layout=layout, finalize=True)
 
 
 def criptografar():
-    sg.theme('Reddit')
-    layout = [
-        [sg.Text('Digite a menssagem'),sg.Input(key='message')],
-        [sg.Text('Digite a chave em números'),sg.Input(key='key')],
-        [sg.Button('Voltar'), sg.Button('Enviar')],
-        [sg.Output(size=(50,30))],
-        [sg.Button('Copiar')],
+    sg.theme('DarkBlue')
+    col1 = [
+        [sg.Text(
+            'Digite a menssagem:',
+            font=("Arial", 11),),
+
+         sg.Multiline(key='message',
+            size=(150, 2), no_scrollbar=True
+        )],
+
+        [sg.Text(
+            'Digite a chave em números:',
+            font=("Arial", 11),
+        ),
+
+            sg.Multiline(
+                key='key',
+                size=(150, 2),
+                no_scrollbar=True
+        )],
+
+        [sg.Button(
+            'Voltar',
+            size=(15, 1),
+            pad=(0, 15),
+            button_color=('white', '#009444')
+        ),
+            sg.Button(
+                'Enviar',
+                size=(15, 1),
+                button_color=('white', '#009444')
+        )],
     ]
-    return sg.Window('Criptografar', layout=layout, finalize=True)
+
+    layout = [
+        [sg.Image(
+            source="image/logo100x.png", 
+            pad=(0, 40)
+            ), 
+
+            sg.Column(col1)
+        ],
+        
+        [sg.Output(
+            size=(150, 10),
+        )],
+
+        [sg.Button(
+            'Copiar', 
+            size=(15, 1), 
+            pad=(0, 15),
+            button_color=('white', '#009444')
+        )],
+    ]
+    return sg.Window('Criptografar', size=(800, 450), layout=layout, finalize=True)
+
 
 def desencriptografar():
-    sg.theme('Reddit')
-    layout = [
-        [sg.Text('Digite a menssagem'),sg.Input(key='message')],
-        [sg.Text('Digite a chave em números'),sg.Input(key='key')],
-        [sg.Button('Voltar'), sg.Button('Enviar')],
-        [sg.Output(size=(50,30))]
+    sg.theme('DarkBlue')
+    col1 = [
+        [sg.Text('Digite a menssagem:'), 
+
+         sg.Multiline(
+            key='message', 
+            size=(150, 2), 
+            no_scrollbar=True
+        )],
+
+        [sg.Text(
+            'Digite a chave em números:'
+            ),
+             
+            sg.Multiline(
+            key='key', size=(150, 2),
+            no_scrollbar=True
+        )],
+        
+        [sg.Button(
+            'Voltar', 
+            size=(15, 1), 
+            pad=(0, 15,), 
+            button_color=('white', '#009444')
+            ), 
+            
+            sg.Button(
+            'Enviar', 
+            size=(15, 1), 
+            button_color=('white', '#009444')
+        )],
     ]
-    return sg.Window('Desencriptografar', layout=layout, finalize=True)
+    layout = [
+        [sg.Image(
+            source="image/logo100x.png",
+            ), 
+        sg.Column(col1)],
+        
+        [sg.Output(size=(150, 10))],
+
+        [sg.Button(
+            'Copiar', 
+            size=(15, 1), 
+            pad=(0, 15),
+            button_color=('white', '#009444')
+        )],
+    ]
+    return sg.Window('Desencriptografar', size=(800, 450), layout=layout, finalize=True)
+
 
 def error():
-    sg.theme('Reddit')
-    return sg.Window('Erro',
-    [[sg.Text('Digite uma chave válida!')],[sg.OK(size=(30)),] ],size=(300,150) ).read(close=True)
+    sg.theme('DarkBlue')
+    return sg.Window('Erro',[[sg.Text('Digite uma chave válida!')], [sg.OK(size=(30)), ]], size=(300, 150)).read(close=True)
 
 
 # Janelas iniciais
@@ -93,18 +210,22 @@ while True:
 
     if window == janela2 and event == 'Copiar':
         copy = encrypt(values['message'], values['key'])
-        pyperclip.copy(copy)       
+        pyperclip.copy(copy)
+
+    if window == janela3 and event == 'Copiar':
+        copy = encrypt(values['message'], values['key'])
+        pyperclip.copy(copy)
 
     if window == janela1 and event == 'Decifrar':
         janela1.hide()
         janela3 = desencriptografar()
 
     if window == janela2 and event == 'Voltar':
-        janela2.hide()            
-        janela1.un_hide()  
+        janela2.hide()
+        janela1.un_hide()
 
     if window == janela3 and event == 'Voltar':
-        janela3.hide()            
+        janela3.hide()
         janela1.un_hide()
 
     if window == janela2 and event == 'Enviar':
