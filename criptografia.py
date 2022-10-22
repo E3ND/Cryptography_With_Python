@@ -16,10 +16,12 @@ def encrypt(message, key):
         for slot in message:
             c_index = alphabet.index(slot)
             caracter += alphabet2[(c_index + key) % len(alphabet)]
-        msCripto()
+        if(event != 'Copiar'):
+            msCripto()
         return caracter
     else:
-        error()
+        if(event != 'Copiar'):
+            error()
         return ''
 
 
@@ -32,10 +34,12 @@ def decrypt(message, key):
         for slot in message:
             c_index = alphabet2.index(slot)
             caracter += alphabet[(c_index - key) % len(alphabet)]
-        msDescripto()
+        if(event != 'Copiar'):
+            msDescripto()
         return caracter
     else:
-        error()
+        if(event != 'Copiar'):
+            error()
         return ''
 
 # Interface
