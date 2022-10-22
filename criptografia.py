@@ -1,4 +1,6 @@
-# PlySimpleGUI bibliotec || pip install pysimplegui
+# PySimpleGUI bibliotec || pip install pysimplegui
+# Pyperclip bibliotec || pip install pyperclip
+
 import PySimpleGUI as sg
 import pyperclip
 
@@ -6,8 +8,6 @@ alphabet = 'abcdefghijklmnopqrstuvwxyz,.?çéãõáâàêèóòô!@#$%¨&*()-_+=
 alphabet2 = '9876543210 ,.?çéãõáâàêèóòô!@#$%¨&*()-_+=°zyxwvutsrqponmlkjihgfedcba'
 
 # Criptografar
-
-
 def encrypt(message, key):
     key = key.isdigit()
     if key:
@@ -16,6 +16,7 @@ def encrypt(message, key):
         for slot in message:
             c_index = alphabet.index(slot)
             caracter += alphabet2[(c_index + key) % len(alphabet)]
+        msCripto()
         return caracter
     else:
         error()
@@ -31,14 +32,13 @@ def decrypt(message, key):
         for slot in message:
             c_index = alphabet2.index(slot)
             caracter += alphabet[(c_index - key) % len(alphabet)]
+        msDescripto()
         return caracter
     else:
         error()
         return ''
 
 # Interface
-
-
 def interface():
     sg.theme('DarkBlue')
     layout = [
@@ -80,8 +80,11 @@ def criptografar():
             'Digite a menssagem:',
             font=("Arial", 11),),
 
-         sg.Multiline(key='message',
-            size=(150, 2), no_scrollbar=True
+         sg.Multiline(
+            key='message',
+            size=(150, 0), 
+            no_scrollbar=True,
+            font = ("Arial", 12)
         )],
 
         [sg.Text(
@@ -91,8 +94,9 @@ def criptografar():
 
             sg.Multiline(
                 key='key',
-                size=(150, 2),
-                no_scrollbar=True
+                size=(150, 0), 
+                no_scrollbar=True,
+                font = ("Arial", 12)
         )],
 
         [sg.Button(
@@ -118,7 +122,8 @@ def criptografar():
         ],
         
         [sg.Output(
-            size=(150, 10),
+            size=(150, 8),
+            font = ("Arial", 15)
         )],
 
         [sg.Button(
@@ -138,8 +143,9 @@ def desencriptografar():
 
          sg.Multiline(
             key='message', 
-            size=(150, 2), 
-            no_scrollbar=True
+            size=(150, 0), 
+            no_scrollbar=True,
+            font = ("Arial", 12)
         )],
 
         [sg.Text(
@@ -147,8 +153,10 @@ def desencriptografar():
             ),
              
             sg.Multiline(
-            key='key', size=(150, 2),
-            no_scrollbar=True
+            key='key',
+            size=(150, 0), 
+            no_scrollbar=True,
+            font = ("Arial", 12)
         )],
         
         [sg.Button(
@@ -170,7 +178,10 @@ def desencriptografar():
             ), 
         sg.Column(col1)],
         
-        [sg.Output(size=(150, 10))],
+        [sg.Output(
+            size=(150, 8), 
+            font = ("Arial", 15)
+        )],
 
         [sg.Button(
             'Copiar', 
@@ -184,11 +195,29 @@ def desencriptografar():
 
 def error():
     sg.theme('DarkBlue')
-    return sg.Window('Erro',[[sg.Text('Digite uma chave válida!')], [sg.OK(size=(30)), ]], size=(300, 150)).read(close=True)
+    return sg.Window('Erro',[
+            [sg.Text('Digite uma chave válida!',  font=("Arial", 11), pad=(0, 15),)], 
+            [sg.OK(size=(30), pad=(0, 25), button_color=('white', '#009444')), ]
+        ], element_justification='c', size=(300, 150)).read(close=True)
+
+
+def msCripto():
+    sg.theme('DarkBlue')
+    return sg.Window('Enviada',[
+            [sg.Text('Mensagem Criptografada Enviada com sucesso!',  font=("Arial", 11), pad=(0, 15),)], 
+            [sg.OK(size=(30), pad=(0, 25), button_color=('white', '#009444')), ]
+        ], element_justification='c', size=(350, 150)).read(close=True)
+
+def msDescripto():
+    sg.theme('DarkBlue')
+    return sg.Window('Enviada',[
+            [sg.Text('Mensagem Descriptografada com sucesso!',  font=("Arial", 11), pad=(0, 15),)], 
+            [sg.OK(size=(30), pad=(0, 25), button_color=('white', '#009444')), ]
+        ], element_justification='c', size=(350, 150)).read(close=True)
 
 
 # Janelas iniciais
-janela1, janela2, janela3, janela4 = interface(), None, None, None
+janela1, janela2, janela3, janela4, janela5, janela6 = interface(), None, None, None, None, None
 
 # Loop  de leitura de eventos
 while True:
@@ -202,6 +231,7 @@ while True:
 
     if window == janela3 and event == sg.WIN_CLOSED:
         break
+    
 
     # Ir para próxima janela
     if window == janela1 and event == 'Cifrar':
@@ -213,7 +243,7 @@ while True:
         pyperclip.copy(copy)
 
     if window == janela3 and event == 'Copiar':
-        copy = encrypt(values['message'], values['key'])
+        copy = decrypt(values['message'], values['key'])
         pyperclip.copy(copy)
 
     if window == janela1 and event == 'Decifrar':
